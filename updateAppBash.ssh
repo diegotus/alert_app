@@ -1,0 +1,64 @@
+updateSplash="flutter pub run flutter_native_splash:create"
+updateAppIcon="flutter pub run flutter_launcher_icons"
+appName="dart run package_rename --path='.\package_rename_config.yaml'"
+fontGeneratorClass="--class-name="
+fontGeneratorDirectory="lib/app/core/fonts/"
+fontGeneratorFultterDirectory="lib/app/core/utils/"
+genarateFontFromSVG="flutter pub run icon_generator --from="
+genarateGetStoragePro="dart run build_runner build --delete-conflicting-outputs"
+
+echo
+echo "What Do you want to update?"
+echo
+echo "1 - App Name"
+echo "2 - App Icon"
+echo "3 - Splash Screen"
+echo "4 - Genarate font from SVG"
+echo "5 - Genarate Get Storage Pro"
+echo
+echo "NB: Press any other key to exit"
+read -rsn1 -p "Option: " selectedOption
+
+if [ "$selectedOption" = "1" ]; then
+echo -n "Update App Name"
+echo
+eval "$appName"
+
+elif [ "$selectedOption" = "2" ]; then
+echo -n "Update App Icon"
+echo
+eval "$updateAppIcon"
+
+elif [ "$selectedOption" = "3" ]; then
+echo -n "Update Splash Screen"
+echo
+echo
+eval "$updateSplash"
+
+elif [ "$selectedOption" = "4" ]; then
+echo  ":::::Genarating font from SVG:::::"
+echo
+echo -n"Please, Enter folder directory : "
+read fromDirectory
+echo
+echo -n"Please, Enter class Icon name : "
+read className
+echo "Please wait Genarating Font"
+mkdir -p $fontGeneratorDirectory
+mkdir -p $fontGeneratorFultterDirectory
+eval "${genarateFontFromSVG}${fromDirectory} ${fontGeneratorClass}${className} --out-font=${fontGeneratorDirectory}${className}.ttf --out-flutter=${fontGeneratorFultterDirectory}${className}_icons.dart"
+
+
+elif [ "$selectedOption" = "5" ]; then
+echo -n "Genarate GetStoragePro Classes"
+echo
+echo
+echo -n ":::::Generating GetStoreagePro classes:::::"
+echo
+eval "$genarateGetStoragePro"
+echo
+echo "Done"
+else
+echo "Good Bye"
+fi
+echo

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "969896261161",
+    "project_id": "haiti-alert",
+    "storage_bucket": "haiti-alert.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969896261161:android:561b38b2b2dc3e82268e38",
+        "android_client_info": {
+          "package_name": "ht.ehaiti.alert"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHqcDgQvOI3y-nevU3cssrNQScTNu2NBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969896261161:android:b334f3a4fc177144268e38",
+        "android_client_info": {
+          "package_name": "ht.ehaiti.alert.alert_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHqcDgQvOI3y-nevU3cssrNQScTNu2NBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
