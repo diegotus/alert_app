@@ -1,4 +1,6 @@
+import 'package:alert_app/app/controllers/firebase_service_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 
@@ -6,9 +8,10 @@ import '../controllers/alert_controller.dart';
 
 class AlertView extends GetView<AlertController> {
   const AlertView({super.key});
-  String? get message => Get.arguments;
+  Map<String, dynamic>? get message => Get.arguments ?? Get.parameters;
   @override
   Widget build(BuildContext context) {
+    print("the message $message");
     return Scaffold(
       backgroundColor: Colors.red.shade50,
       body: Center(
@@ -20,12 +23,18 @@ class AlertView extends GetView<AlertController> {
               const Icon(Icons.warning, size: 80, color: Colors.red),
               const SizedBox(height: 20),
               Text(
-                message ?? 'Emergency Alert',
+                message?['title'] ?? 'Unknown Emergency Alert',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontSize: 22,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
+              ),
+              const SizedBox(height: 5),
+              Text(
+                message?['body'] ?? 'Emergency Alert',
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 22),
               ),
               const SizedBox(height: 30),
               ElevatedButton(

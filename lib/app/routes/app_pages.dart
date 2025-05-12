@@ -1,8 +1,10 @@
-import 'package:alert_app/app/data/middleware/auth_gard.dart';
 import 'package:get/get.dart';
 
+import '../data/middleware/auth_gard.dart';
 import '../modules/alert/bindings/alert_binding.dart';
 import '../modules/alert/views/alert_view.dart';
+import '../modules/fullscreen/bindings/fullscreen_binding.dart';
+import '../modules/fullscreen/views/fullscreen_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/profil/bindings/profil_binding.dart';
@@ -35,6 +37,11 @@ class AppPages {
       page: () => const ProfilView(),
       binding: ProfilBinding(),
       middlewares: [CheckAuthentificated()],
+    ),
+    GetPage(
+      name: _Paths.FULLSCREEN,
+      page: () => const FullscreenView(),
+      binding: FullscreenBinding(),
     ),
   ];
 }

@@ -15,8 +15,13 @@ class ProfilView extends GetView<ProfilController> {
 
   @override
   Widget build(BuildContext context) {
-    UserModel initialValue = controller.user.value;
-    phoneFormatter.clear();
+    var phone = getPhoneFormatter("48758495");
+    phoneFormatter.formatEditUpdate(
+      TextEditingValue.empty,
+      TextEditingValue(
+        text: controller.user.value.phone.replaceAll("+509", ""),
+      ),
+    );
     return Scaffold(
       appBar: AppBar(title: const Text('Profil'), centerTitle: true),
       resizeToAvoidBottomInset: false,
@@ -42,6 +47,8 @@ class ProfilView extends GetView<ProfilController> {
                             decoration: const InputDecoration(
                               labelText: 'Full Name',
                             ),
+                            textInputAction: TextInputAction.next,
+
                             onChanged: (value) {
                               controller.user.update((val) {
                                 val?.name = value;
@@ -55,14 +62,22 @@ class ProfilView extends GetView<ProfilController> {
                           ),
 
                           TextFormField(
-                            initialValue: controller.user.value.phone,
+                            initialValue: phoneFormatter.maskText(
+                              controller.user.value.phone.replaceAll(
+                                "+509",
+                                '',
+                              ),
+                            ),
                             decoration: const InputDecoration(
                               labelText: 'Phone Number',
                             ),
+                            textInputAction: TextInputAction.next,
+
                             keyboardType: TextInputType.phone,
                             inputFormatters: [phoneFormatter],
 
                             onChanged: (value) {
+                              phone.clear();
                               controller.user.update((val) {
                                 val?.phone = value.replaceAll(
                                   RegExp(r"\(|\)|\s|-"),
@@ -73,7 +88,7 @@ class ProfilView extends GetView<ProfilController> {
                             validator: validateHaitianPhoneNumber,
                           ),
 
-                          FutureDropdownForm(
+                          FutureDropdownForm<SiteModel>(
                             initialValue:
                                 controller.user.value.site.isNotEmpty
                                     ? SiteModel(
@@ -81,10 +96,23 @@ class ProfilView extends GetView<ProfilController> {
                                     )
                                     : null,
                             future: controller.callListApi,
+                            onData: (data) {
+                              if (data != null && data.isNotEmpty) {
+                                StorageBox.sites.val =
+                                    data.map((el) => el.toJson()).toList();
+                              }
+                            },
+                            initialValues: () {
+                              return StorageBox.sites.val
+                                  .map((el) => SiteModel.fromJson(el))
+                                  .toList();
+                            },
                             onChanged: (item) {
-                              controller.user.update((val) {
-                                val?.site = item?.name ?? '';
-                              });
+                              if (item != null) {
+                                controller.user.update((val) {
+                                  val?.site = item?.name ?? '';
+                                });
+                              }
                             },
                             validator:
                                 (value) =>
@@ -120,7 +148,14 @@ class ProfilView extends GetView<ProfilController> {
                         child: const Text('Cancel'),
                       ),
                       ElevatedButton(
-                        onPressed: controller.updateUser,
+                        onPressed: () {
+                          Get.showOverlay(
+                            asyncFunction: controller.updateUser,
+                            loadingWidget: Center(
+                              child: CircularProgressIndicator.adaptive(),
+                            ),
+                          );
+                        },
                         child: const Text('Update'),
                       ),
                     ],

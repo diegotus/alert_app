@@ -2,10 +2,12 @@ import 'dart:io' show Platform;
 
 import 'package:alert_app/app/controllers/app_services_controller.dart';
 import 'package:alert_app/app/core/utils/app_utility.dart';
+import 'package:alert_app/app/core/utils/device_id.dart';
 import 'package:alert_app/app/core/utils/storage_box.dart';
 import 'package:alert_app/app/data/app_services_provider.dart';
 import 'package:alert_app/app/routes/app_pages.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
@@ -39,7 +41,7 @@ class RegistrationController extends GetxController {
             ? 'android'
             : 'ios';
     if (StorageBox.id.val.isEmpty) {
-      id = Uuid().v4();
+      id = await DeviceID.deviceUUID();
     }
     final response = await provider.registerDevice(
       params: {
@@ -54,8 +56,15 @@ class RegistrationController extends GetxController {
 
     if (response?.isSuccess == true) {
       await _saveProfileToStorage();
-      showMsg('User Registered Successfully!', type: TypeMessage.success);
-      Get.offNamed(Routes.PROFIL);
+      await showMsg(
+        'User Registered Successfully!\nN.B: The App will automatically close.',
+        type: TypeMessage.success,
+      ).future;
+      if (!kDebugMode) {
+        await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      } else {
+        Get.offAllNamed(Routes.PROFIL);
+      }
     } else {
       // showMsg('Registration failed.', type: TypeMessage.error);
     }

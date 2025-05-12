@@ -1,6 +1,7 @@
 import 'package:alert_app/app/controllers/firebase_service_controller.dart';
+import 'package:eraser/eraser.dart';
 import 'package:firebase_notifications_handler/firebase_notifications_handler.dart'
-    show FirebaseNotificationsHandler;
+    show FirebaseNotificationsHandler, LocalNotificationsConfiguration;
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -43,8 +44,14 @@ class MyApp extends StatelessWidget {
       onFcmTokenInitialize: firebaseServices.onFcmTokenInitialize,
       shouldHandleNotification: firebaseServices.shouldHandleNotification,
       onOpenNotificationArrive: firebaseServices.onOpenNotificationArrive,
-      permissionGetter: FirebaseServices.permissionGetter,
+      permissionGetter: firebaseServices.permissionGetter,
       requestPermissionsOnInitialize: true,
+      localNotificationsConfiguration: LocalNotificationsConfiguration(
+        notificationIdGetter: (p0) {
+          print("getting id ${p0.hashCode}");
+          return p0.hashCode;
+        },
+      ),
       onTap:
           (val) => firebaseServices.onOpenNotificationArrive(val, taped: true),
       child: GetMaterialApp(
@@ -52,6 +59,13 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(primarySwatch: Colors.red),
         initialRoute: AppPages.INITIAL,
         getPages: AppPages.routes,
+        onUnknownRoute: (settings) {
+          return MaterialPageRoute(
+            builder: (BuildContext context) {
+              return Scaffold(body: Center(child: Text("uknow rooute")));
+            },
+          );
+        },
       ),
     );
   }

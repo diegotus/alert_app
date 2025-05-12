@@ -5,7 +5,7 @@ String? validateHaitianPhoneNumber(String? value) {
   if (value == null || value.isEmpty) {
     return 'Please enter your phone number';
   } else if (!regex.hasMatch(value)) {
-    return 'Phone must be in the format +(509) 9999-9999 $value';
+    return 'Phone must be in the format $value +(509) 9999-9999';
   }
   return null;
 }

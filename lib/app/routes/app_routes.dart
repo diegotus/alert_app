@@ -6,6 +6,7 @@ abstract class Routes {
   static const REGISTRATION = _Paths.REGISTRATION;
   static const PROFIL = _Paths.PROFIL;
   static const ALERT = _Paths.ALERT;
+  static const FULLSCREEN = _Paths.FULLSCREEN;
 }
 
 abstract class _Paths {
@@ -13,4 +14,5 @@ abstract class _Paths {
   static const REGISTRATION = '/registration';
   static const PROFIL = '/profil';
   static const ALERT = '/alert';
+  static const FULLSCREEN = '/fullscreen';
 }

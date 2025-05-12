@@ -2,6 +2,7 @@ import 'package:alert_app/app/core/utils/formater.dart';
 import 'package:alert_app/app/core/utils/validators.dart';
 import 'package:alert_app/app/data/models/site_model.dart';
 import 'package:flutter/material.dart';
+import 'package:alert_app/app/core/utils/storage_box.dart';
 
 import 'package:get/get.dart';
 
@@ -26,7 +27,10 @@ class RegistrationView extends GetView<RegistrationController> {
               spacing: 15,
               children: [
                 TextFormField(
+                  autofocus: true,
                   decoration: const InputDecoration(labelText: 'Full Name'),
+                  textCapitalization: TextCapitalization.words,
+                  textInputAction: TextInputAction.next,
                   onSaved: (value) => controller.name = value ?? '',
                   validator:
                       (value) =>
@@ -37,6 +41,7 @@ class RegistrationView extends GetView<RegistrationController> {
                   decoration: const InputDecoration(labelText: 'Phone Number'),
                   keyboardType: TextInputType.phone,
                   inputFormatters: [phoneFormatter],
+                  textInputAction: TextInputAction.next,
                   onSaved:
                       (value) =>
                           controller.phone =
@@ -49,6 +54,17 @@ class RegistrationView extends GetView<RegistrationController> {
                   future: controller.callListApi,
                   onSaved: (value) => controller.site = value?.name ?? '',
                   onChanged: (item) {},
+                  onData: (data) {
+                    if (data != null && data.isNotEmpty) {
+                      StorageBox.sites.val =
+                          data.map((el) => el.toJson()).toList();
+                    }
+                  },
+                  initialValues:
+                      () =>
+                          StorageBox.sites.val
+                              .map((el) => SiteModel.fromJson(el))
+                              .toList(),
                   validator:
                       (value) =>
                           value == null ? 'Please enter your site name' : null,
@@ -72,7 +88,10 @@ class RegistrationView extends GetView<RegistrationController> {
   void _submit() {
     if (controller.formKey.currentState!.validate()) {
       controller.formKey.currentState!.save();
-      controller.registerUser();
+      Get.showOverlay(
+        asyncFunction: controller.registerUser,
+        loadingWidget: Center(child: CircularProgressIndicator.adaptive()),
+      );
     }
   }
 }

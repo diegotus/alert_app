@@ -1,5 +1,10 @@
 import 'dart:io';
 
+import 'package:alert_app/app/core/utils/formater.dart';
+import 'package:alert_app/app/routes/app_pages.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart' show FormState, GlobalKey;
 import 'package:get/get.dart';
 
@@ -14,6 +19,8 @@ class ProfilController extends GetxController {
   late final AppServicesController appService;
   late final Rx<UserModel> user;
   final formKey = GlobalKey<FormState>();
+  List<SiteModel> get listSite =>
+      StorageBox.sites.val.map((el) => SiteModel.fromJson(el)).toList();
   Future<List<SiteModel>> Function() get callListApi =>
       appService.callListSitesAPI;
 
@@ -32,10 +39,17 @@ class ProfilController extends GetxController {
         token: StorageBox.fmcToken.val,
       ),
     );
+
     super.onInit();
   }
 
+  @override
+  void onReady() {
+    super.onReady();
+  }
+
   void resetUser() {
+    var phone = user.value.phone;
     user.update((user) {
       user?.id = appService.id;
       user?.name = appService.name;
@@ -44,6 +58,11 @@ class ProfilController extends GetxController {
       user?.token = StorageBox.fmcToken.val;
     });
     formKey.currentState?.reset();
+    // phoneFormatter.clear();
+    phoneFormatter.formatEditUpdate(
+      TextEditingValue.empty,
+      TextEditingValue(text: appService.phone.replaceAll("+509", "")),
+    );
   }
 
   bool hasChanges() {
@@ -74,7 +93,13 @@ class ProfilController extends GetxController {
         user.value.saveToBox();
         user.refresh();
         update(['form_Widget']);
-        showMsg('User Updated Successfully!', type: TypeMessage.success);
+        await showMsg(
+          'User Updated Successfully!\nN.B: The App will automatically close.',
+          type: TypeMessage.success,
+        ).future;
+        if (!kDebugMode) {
+          await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+        }
       }
     }
   }

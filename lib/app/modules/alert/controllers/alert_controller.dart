@@ -1,37 +1,43 @@
+import 'package:alert_app/app/controllers/app_services_controller.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:eraser/eraser.dart';
+import 'package:firebase_notifications_handler/firebase_notifications_handler.dart';
 import 'package:get/get.dart';
 import 'package:vibration/vibration.dart' show Vibration;
 
 class AlertController extends GetxController {
-  final AudioPlayer _audioPlayer = AudioPlayer();
+  AlertController({this.autoStart = true});
+  AppServicesController get appService => Get.find<AppServicesController>();
 
+  final bool autoStart;
   @override
   onInit() {
-    _triggerAlert();
+    print("sound played init ${Get.currentRoute}");
+
     super.onInit();
   }
 
-  Future<void> _triggerAlert() async {
-    await _audioPlayer.setReleaseMode(ReleaseMode.loop);
-    await _audioPlayer.play(
-      AssetSource('sounds/EmergencyAlertSystem.mp3'),
-      volume: 10000,
-      mode: PlayerMode.mediaPlayer,
-    );
-    if (await Vibration.hasVibrator()) {
-      Vibration.vibrate(pattern: [500, 1000, 500, 1000], repeat: 0);
+  @override
+  onReady() {
+    if (autoStart) _triggerAlert(true);
+    super.onStart();
+  }
+
+  get triggerAlert => _triggerAlert();
+  Future<void> _triggerAlert([bool clear = false]) async {
+    appService.startAlert();
+    if (clear) {
+      await Eraser.clearAllAppNotifications();
     }
   }
 
-  Future<void> stopAlert() async {
-    await _audioPlayer.stop();
-    await Vibration.cancel();
-    Get.back();
+  Future<void> stopAlert([bool clear = false]) async {
+    appService.stopAlert();
   }
 
   @override
   void onClose() async {
-    await stopAlert();
+    await appService.stopAlert();
     super.onClose();
   }
 }
