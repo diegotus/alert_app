@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:alert_app/app/core/utils/storage_box.dart';
 import 'package:alert_app/app/data/app_services_provider.dart'
     show AppServicesProvider;
@@ -83,7 +85,9 @@ class AppServicesController extends FullLifeCycleController
       print("stoping the playre");
       await _audioPlayer.stop();
       await Vibration.cancel();
-      await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      Platform.isIOS
+          ? exit(0)
+          : await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
     }
   }
 
