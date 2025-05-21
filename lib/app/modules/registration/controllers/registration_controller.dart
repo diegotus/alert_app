@@ -10,7 +10,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../../data/models/site_model.dart';
 
@@ -56,15 +55,12 @@ class RegistrationController extends GetxController {
 
     if (response?.isSuccess == true) {
       await _saveProfileToStorage();
-      await showMsg(
-        'User Registered Successfully!\nN.B: The App will automatically close.',
+      showMsg(
+        "Utilisateur enregistré avec succès !",
         type: TypeMessage.success,
       ).future;
-      if (!kDebugMode) {
-        await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-      } else {
-        Get.offAllNamed(Routes.PROFIL);
-      }
+
+      Get.offAllNamed(Routes.HOME);
     } else {
       // showMsg('Registration failed.', type: TypeMessage.error);
     }

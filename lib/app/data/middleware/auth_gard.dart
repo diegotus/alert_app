@@ -33,7 +33,7 @@ class CheckNotAuthentificated extends GetMiddleware {
   RouteSettings? redirect(String? route) {
     //NEVER navigate to auth screen, when user is already authed
     if (StorageBox.id.val.isNotEmpty) {
-      return RouteSettings(name: Routes.PROFIL);
+      return RouteSettings(name: Routes.HOME);
     }
     return null;
   }

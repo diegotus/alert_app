@@ -1,9 +1,8 @@
 import 'dart:io';
 
 import 'package:alert_app/app/core/utils/formater.dart';
-import 'package:alert_app/app/routes/app_pages.dart';
-import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:alert_app/app/data/models/notification_model.dart'
+    show NotificationModel;
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart' show FormState, GlobalKey;
 import 'package:get/get.dart';
@@ -26,6 +25,7 @@ class ProfilController extends GetxController {
 
   AppServicesProvider get provider =>
       Get.find<AppServicesController>().provider;
+  final listNotification = RxList<NotificationModel>([]);
 
   @override
   void onInit() {
@@ -39,6 +39,14 @@ class ProfilController extends GetxController {
         token: StorageBox.fmcToken.val,
       ),
     );
+    listNotification.addAll(
+      StorageBox.notifactions.val.map((el) => NotificationModel.fromJson(el)),
+    );
+    StorageBox.boxKeys().listenKey("notifications", (value) {
+      listNotification.assignAll(
+        (value as List<String>).map((el) => NotificationModel.fromJson(el)),
+      );
+    });
 
     super.onInit();
   }
@@ -93,13 +101,11 @@ class ProfilController extends GetxController {
         user.value.saveToBox();
         user.refresh();
         update(['form_Widget']);
-        await showMsg(
-          'User Updated Successfully!\nN.B: The App will automatically close.',
+        Get.back();
+        showMsg(
+          'Utilisateur mis à jour avec succès!',
           type: TypeMessage.success,
         ).future;
-        if (!kDebugMode) {
-          await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-        }
       }
     }
   }

@@ -3,16 +3,18 @@ part of 'app_pages.dart';
 
 abstract class Routes {
   Routes._();
+  static const HOME = _Paths.HOME;
   static const REGISTRATION = _Paths.REGISTRATION;
   static const PROFIL = _Paths.PROFIL;
   static const ALERT = _Paths.ALERT;
-  static const FULLSCREEN = _Paths.FULLSCREEN;
+  static const NOTIFICATION_DETAIL = _Paths.NOTIFICATION_DETAIL;
 }
 
 abstract class _Paths {
   _Paths._();
+  static const HOME = '/home';
   static const REGISTRATION = '/registration';
   static const PROFIL = '/profil';
   static const ALERT = '/alert';
-  static const FULLSCREEN = '/fullscreen';
+  static const NOTIFICATION_DETAIL = '/notification-detail';
 }

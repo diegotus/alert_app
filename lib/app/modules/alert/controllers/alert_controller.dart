@@ -32,7 +32,7 @@ class AlertController extends GetxController {
   }
 
   Future<void> stopAlert([bool clear = false]) async {
-    appService.stopAlert();
+    appService.stopAlert(Get.parameters['isIntent'] == "true");
   }
 
   @override

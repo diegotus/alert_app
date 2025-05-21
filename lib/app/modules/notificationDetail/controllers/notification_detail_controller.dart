@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-class FullscreenController extends GetxController {
-  //TODO: Implement FullscreenController
+class NotificationDetailController extends GetxController {
+  //TODO: Implement NotificationDetailController
 
   final count = 0.obs;
   @override

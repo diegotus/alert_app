@@ -1,9 +1,11 @@
 import 'package:alert_app/app/core/utils/storage_box.dart';
 import 'package:alert_app/app/data/app_services_provider.dart'
     show AppServicesProvider;
+import 'package:alert_app/app/routes/app_pages.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:eraser/eraser.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/services.dart' show SystemChannels;
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:vibration/vibration.dart';
 
@@ -28,7 +30,6 @@ class AppServicesController extends FullLifeCycleController
 
   @override
   void onInactive() {
-    print("app window on inative");
     stopAlert();
   }
 
@@ -78,12 +79,17 @@ class AppServicesController extends FullLifeCycleController
     }
   }
 
-  Future<void> stopAlert() async {
+  Future<void> stopAlert([bool isIntent = false]) async {
     if (_audioPlayer.state == PlayerState.playing) {
-      print("stoping the playre");
       await _audioPlayer.stop();
       await Vibration.cancel();
-      await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      if (isIntent) {
+        await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      } else if (Get.context != null && Navigator.canPop(Get.context!)) {
+        Get.back();
+      } else {
+        Get.offAndToNamed(Routes.HOME);
+      }
     }
   }
 

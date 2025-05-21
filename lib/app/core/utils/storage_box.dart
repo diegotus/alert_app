@@ -8,6 +8,7 @@ mixin StorageBox {
   static final site = ''.val("site", getBox: boxKeys);
   static final fmcToken = ''.val("fmcToken", getBox: boxKeys);
   static final sites = [].val("sites", getBox: boxKeys);
+  static final notifactions = [].val("notifications", getBox: boxKeys);
 
   static Future<void> removeToken() async {
     await boxKeys().remove('token');

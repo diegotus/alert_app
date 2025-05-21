@@ -29,7 +29,7 @@ class CoreService {
           statusCode: response.statusCode!,
           error: response.statusText,
           message: [
-            "Error occurred while Communication with Server",
+            "Une erreur s'est produite lors de la communication avec le serveur",
             'StatusCode :${response.statusCode}',
           ],
         );
@@ -52,7 +52,7 @@ class CoreService {
       case 500:
       default:
         throw FetchDataException(
-          'Error occurred while Communication with Server ${response.statusCode == null ? '' : 'with StatusCode :${response.statusCode}'}',
+          'Une erreur s\'est produite lors de la communication avec le serveur ${response.statusCode == null ? '' : 'avec StatusCode :${response.statusCode}'}',
         );
     }
   }

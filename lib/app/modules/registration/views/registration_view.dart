@@ -17,7 +17,7 @@ class RegistrationView extends GetView<RegistrationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Register')),
+      appBar: AppBar(title: const Text('Enregistrement')),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -28,25 +28,29 @@ class RegistrationView extends GetView<RegistrationController> {
               children: [
                 TextFormField(
                   autofocus: true,
-                  decoration: const InputDecoration(labelText: 'Full Name'),
+                  decoration: const InputDecoration(labelText: 'Nom Complet'),
                   textCapitalization: TextCapitalization.words,
                   textInputAction: TextInputAction.next,
                   onSaved: (value) => controller.name = value ?? '',
                   validator:
                       (value) =>
-                          value!.isEmpty ? 'Please enter your full name' : null,
+                          value!.isEmpty
+                              ? 'Veuillez entrer votre Nom Complet svp.'
+                              : null,
                 ),
 
                 TextFormField(
-                  decoration: const InputDecoration(labelText: 'Phone Number'),
+                  decoration: const InputDecoration(
+                    labelText: 'Numéro de Téléphone',
+                    prefix: Text("+(509) "),
+                  ),
                   keyboardType: TextInputType.phone,
                   inputFormatters: [phoneFormatter],
                   textInputAction: TextInputAction.next,
                   onSaved:
                       (value) =>
                           controller.phone =
-                              value?.replaceAll(RegExp(r"\(|\)|\s|-"), '') ??
-                              '',
+                              '+509${value ?? ''.replaceAll(RegExp(r"-"), '')}',
                   validator: validateHaitianPhoneNumber,
                 ),
 
@@ -67,7 +71,9 @@ class RegistrationView extends GetView<RegistrationController> {
                               .toList(),
                   validator:
                       (value) =>
-                          value == null ? 'Please enter your site name' : null,
+                          value == null
+                              ? 'Veuillez Choisir un Site SVP.'
+                              : null,
                   itemBuilder: (item) {
                     return Text(item.name);
                   },
@@ -75,7 +81,7 @@ class RegistrationView extends GetView<RegistrationController> {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: _submit,
-                  child: const Text('Register'),
+                  child: const Text("S'enregistrer"),
                 ),
               ],
             ),

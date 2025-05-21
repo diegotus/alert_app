@@ -1,7 +1,7 @@
 import 'package:alert_app/app/core/utils/formater.dart';
 
 String? validateHaitianPhoneNumber(String? value) {
-  final RegExp regex = RegExp(r'^\+\(509\) \d{4}-\d{4}$');
+  final RegExp regex = RegExp(r'^\d{4}-\d{4}$');
   if (value == null || value.isEmpty) {
     return 'Please enter your phone number';
   } else if (!regex.hasMatch(value)) {

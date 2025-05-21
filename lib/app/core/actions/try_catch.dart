@@ -30,9 +30,9 @@ FutureOr<T?> tryCatch<T>(FutureOr<T> Function() doaction) async {
   } catch (e) {
     e.printError();
     Get.log("its an error $e", isError: true);
-    appService.errorMsg.value = "Unknow Error : $e";
+    appService.errorMsg.value = "Erreur inconnue : $e";
 
-    showMsg("Unknow Error : $e", color: Colors.red);
+    showMsg("Erreur inconnue : $e", color: Colors.red);
 
     // throw e;
   }

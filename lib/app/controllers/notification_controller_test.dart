@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:alert_app/app/controllers/app_services_controller.dart';
+import 'package:alert_app/app/core/utils/storage_box.dart' show StorageBox;
+import 'package:alert_app/app/data/models/notification_model.dart'
+    show NotificationModel;
 import 'package:alert_app/app/routes/app_pages.dart';
 import 'package:eraser/eraser.dart' show Eraser;
 import 'package:external_app_launcher/external_app_launcher.dart';
@@ -10,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_full_screen_intent/flutter_full_screen_intent.dart';
 import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/num_extensions.dart';
+import 'package:get_storage/get_storage.dart' show GetStorage;
 
 import '../modules/alert/controllers/alert_controller.dart'
     show AlertController;
@@ -61,9 +65,27 @@ Future<void> showFullScreenNotification(RemoteMessage message) async {
   // Pass relevant data for when the notification is tapped
   if (title != null && body != null) {
     final Map<String, dynamic> payloadData = message.data;
+    var isInited = await GetStorage.init("userData");
+    if (isInited) {
+      int startRage = 0;
+      if (StorageBox.notifactions.val.length >= 100) {
+        startRage = 1;
+      }
+      StorageBox.notifactions.val = [
+        ...StorageBox.notifactions.val.getRange(
+          startRage,
+          StorageBox.notifactions.val.length,
+        ),
+        NotificationModel(
+          title: title,
+          body: body,
+          message: payloadData['message'],
+        ).toJson(),
+      ];
+    }
     if (Platform.isAndroid) {
       await FlutterFullScreenIntent().openFullScreenWidget(
-        "${Routes.ALERT}?title=$title&body=$body&payload=${jsonEncode(payloadData)}",
+        "${Routes.ALERT}?title=$title&body=$body&payload=${jsonEncode(payloadData)}&isIntent=true",
       );
     } else {
       Get.isRegistered<AlertController>()
@@ -98,7 +120,6 @@ Future<void> main() async {
   Future<void> onDidReceiveNotificationResponse(
     NotificationResponse notificationResponse,
   ) async {
-    print('Notification Tapped: Payload: ${notificationResponse.payload}');
     if (notificationResponse.payload != null &&
         notificationResponse.payload!.isNotEmpty) {
       try {

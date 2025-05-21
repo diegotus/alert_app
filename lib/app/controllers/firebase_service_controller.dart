@@ -6,6 +6,7 @@ import 'package:alert_app/app/controllers/notification_controller_test.dart'
         firebaseMessagingBackgroundHandler,
         firebaseMessagingBackgroundHandler2;
 import 'package:alert_app/app/core/utils/storage_box.dart';
+import 'package:alert_app/app/data/models/notification_model.dart';
 import 'package:alert_app/app/routes/app_pages.dart';
 import 'package:alert_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -56,7 +57,22 @@ class FirebaseServices extends GetxService {
   }
 
   void onOpenNotificationArrive(NotificationInfo notif, {bool taped = false}) {
-    print("notif arrived ${notif.appState}");
+    int startRage = 0;
+    if (StorageBox.notifactions.val.length >= 100) {
+      startRage = 1;
+    }
+    // StorageBox.notifactions.val.getRange(StorageBox.notifactions.val, end)//
+    StorageBox.notifactions.val = [
+      ...StorageBox.notifactions.val.getRange(
+        startRage,
+        StorageBox.notifactions.val.length,
+      ),
+      NotificationModel(
+        title: notif.firebaseMessage.notification?.title ?? "",
+        body: notif.firebaseMessage.notification?.body ?? "",
+        message: notif.firebaseMessage.data['message'],
+      ).toJson(),
+    ];
     switch (notif.appState) {
       case AppState.terminated:
       case AppState.background:

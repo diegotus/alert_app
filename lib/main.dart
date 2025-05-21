@@ -48,7 +48,6 @@ class MyApp extends StatelessWidget {
       requestPermissionsOnInitialize: true,
       localNotificationsConfiguration: LocalNotificationsConfiguration(
         notificationIdGetter: (p0) {
-          print("getting id ${p0.hashCode}");
           return p0.hashCode;
         },
       ),
@@ -62,7 +61,7 @@ class MyApp extends StatelessWidget {
         onUnknownRoute: (settings) {
           return MaterialPageRoute(
             builder: (BuildContext context) {
-              return Scaffold(body: Center(child: Text("uknow rooute")));
+              return Scaffold(body: Center(child: Text("unknow rooute")));
             },
           );
         },

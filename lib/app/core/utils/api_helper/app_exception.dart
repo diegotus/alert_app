@@ -20,26 +20,26 @@ class AppException implements Exception {
 
 class FetchDataException extends AppException {
   FetchDataException([String? message])
-      : super(message, "Error During Communication: ");
+    : super(message, "Erreur lors de la communication:");
 }
 
 class BadRequestException extends AppException {
   BadRequestException([message])
-      : super(message, "Invalid Request. Try again. ");
+    : super(message, "Requête non valide. Réessayer.");
 }
 
 class UnknownException extends AppException {
-  UnknownException([message]) : super(message, "Unknown Exception. ");
+  UnknownException([message]) : super(message, "Exception inconnue. ");
 }
 
 class UnauthorisedException<T> extends AppException {
   UnauthorisedException([message])
-      : super(message, "Unauthorised request. Try again. ");
+    : super(message, "Requête non autorisée. Veuillez réessayer.. ");
   UnauthorisedException.userNotLogin()
-      : super("User Not Login or session expired.", 0);
+    : super("L'utilisateur n'est pas connecté ou la session a expiré.", 0);
 }
 
 class InvalidInputException extends AppException {
   InvalidInputException([String? message])
-      : super(message, "Invalid Input. Try again. ");
+    : super(message, "Entrée non valide. Réessayer. ");
 }

@@ -45,7 +45,7 @@ class ProfilView extends GetView<ProfilController> {
                           TextFormField(
                             initialValue: controller.user.value.name,
                             decoration: const InputDecoration(
-                              labelText: 'Full Name',
+                              labelText: 'Nom Complet',
                             ),
                             textInputAction: TextInputAction.next,
 
@@ -56,7 +56,7 @@ class ProfilView extends GetView<ProfilController> {
                             },
                             validator: (value) {
                               return value!.isEmpty
-                                  ? 'Please enter your full name'
+                                  ? 'Veuillez entrer votre Nom Complet svp.'
                                   : null;
                             },
                           ),
@@ -69,7 +69,8 @@ class ProfilView extends GetView<ProfilController> {
                               ),
                             ),
                             decoration: const InputDecoration(
-                              labelText: 'Phone Number',
+                              labelText: 'Numéro de Téléphone',
+                              prefix: Text("+(509) "),
                             ),
                             textInputAction: TextInputAction.next,
 
@@ -79,10 +80,8 @@ class ProfilView extends GetView<ProfilController> {
                             onChanged: (value) {
                               phone.clear();
                               controller.user.update((val) {
-                                val?.phone = value.replaceAll(
-                                  RegExp(r"\(|\)|\s|-"),
-                                  '',
-                                );
+                                val?.phone =
+                                    '+509${value.replaceAll(RegExp(r"-"), '')}';
                               });
                             },
                             validator: validateHaitianPhoneNumber,
@@ -110,14 +109,14 @@ class ProfilView extends GetView<ProfilController> {
                             onChanged: (item) {
                               if (item != null) {
                                 controller.user.update((val) {
-                                  val?.site = item?.name ?? '';
+                                  val?.site = item.name;
                                 });
                               }
                             },
                             validator:
                                 (value) =>
                                     value == null
-                                        ? 'Please enter your site name'
+                                        ? 'Veuillez Choisir un Site SVP.'
                                         : null,
                             itemBuilder: (item) {
                               return Text(item.name);

@@ -10,6 +10,7 @@ class AppServicesProvider extends GetConnect {
   @override
   void onInit() {
     httpClient.baseUrl = 'https://alerte-couronne.ehaiti.ht/api';
+    httpClient.timeout = const Duration(seconds: 30);
     httpClient.defaultDecoder = (body) {
       return ServerResponseModel.fromMap(body ?? {"statusCode": 404});
     };
@@ -28,6 +29,7 @@ class AppServicesProvider extends GetConnect {
   Future<ServerResponseModel?> listSitesAPI() async {
     var response = await tryCatch(() async {
       var response = await get("/public/sites");
+      print("the response abm $response");
       return CoreService.returnResponse(response);
     });
     return response;
