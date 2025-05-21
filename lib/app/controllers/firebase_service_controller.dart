@@ -101,6 +101,7 @@ class FirebaseServices extends GetxService {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+
     return FirebaseServices._onInit(token: '');
   }
 

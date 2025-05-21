@@ -1,4 +1,4 @@
-import 'dart:io' show Platform;
+import 'dart:io' show Platform, exit;
 
 import 'package:alert_app/app/controllers/app_services_controller.dart';
 import 'package:alert_app/app/core/utils/app_utility.dart';

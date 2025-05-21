@@ -88,6 +88,7 @@ Future<void> showFullScreenNotification(RemoteMessage message) async {
         "${Routes.ALERT}?title=$title&body=$body&payload=${jsonEncode(payloadData)}&isIntent=true",
       );
     } else {
+      print("its testing");
       Get.isRegistered<AlertController>()
           ? Get.find<AlertController>().triggerAlert()
           : Get.put<AlertController>(AlertController()).triggerAlert();
