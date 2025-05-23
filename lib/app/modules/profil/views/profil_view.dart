@@ -144,7 +144,7 @@ class ProfilView extends GetView<ProfilController> {
                     children: [
                       ElevatedButton(
                         onPressed: controller.resetUser,
-                        child: const Text('Cancel'),
+                        child: const Text('Annuler'),
                       ),
                       ElevatedButton(
                         onPressed: () {
@@ -155,7 +155,7 @@ class ProfilView extends GetView<ProfilController> {
                             ),
                           );
                         },
-                        child: const Text('Update'),
+                        child: const Text('Mettre à jour'),
                       ),
                     ],
                   ),
