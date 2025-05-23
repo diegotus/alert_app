@@ -21,8 +21,8 @@ class NotificationDetailView extends GetView<NotificationDetailController> {
             Divider(height: 30),
             Expanded(
               child:
-                  (item.message ?? '').isNotEmpty
-                      ? SmartText(item.message!)
+                  (item.description ?? '').isNotEmpty
+                      ? SmartText(item.description!)
                       : Center(child: Text("Aucun Message")),
             ),
           ],

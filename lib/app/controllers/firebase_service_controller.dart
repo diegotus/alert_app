@@ -57,6 +57,7 @@ class FirebaseServices extends GetxService {
   }
 
   void onOpenNotificationArrive(NotificationInfo notif, {bool taped = false}) {
+    print("the notif ${notif.firebaseMessage.data}");
     int startRage = 0;
     if (StorageBox.notifactions.val.length >= 100) {
       startRage = 1;
@@ -70,7 +71,7 @@ class FirebaseServices extends GetxService {
       NotificationModel(
         title: notif.firebaseMessage.notification?.title ?? "",
         body: notif.firebaseMessage.notification?.body ?? "",
-        message: notif.firebaseMessage.data['message'],
+        description: notif.firebaseMessage.data['description'],
       ).toJson(),
     ];
     switch (notif.appState) {

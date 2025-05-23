@@ -5,10 +5,10 @@ class NotificationModel {
   DateTime date;
   String title;
   String body;
-  String? message;
+  String? description;
   NotificationModel({
     DateTime? date,
-    this.message,
+    this.description,
     required this.title,
     required this.body,
   }) : date = date ?? DateTime.now();
@@ -17,13 +17,13 @@ class NotificationModel {
     DateTime? date,
     String? title,
     String? body,
-    String? message,
+    String? description,
   }) {
     return NotificationModel(
       date: date ?? this.date,
       title: title ?? this.title,
       body: body ?? this.body,
-      message: message ?? this.message,
+      description: description ?? this.description,
     );
   }
 
@@ -32,7 +32,7 @@ class NotificationModel {
       'date': date.millisecondsSinceEpoch,
       'title': title,
       'body': body,
-      'message': message,
+      'description': description,
     };
   }
 
@@ -44,7 +44,7 @@ class NotificationModel {
               : DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
       title: map['title'] as String,
       body: map['body'] as String,
-      message: map['message'],
+      description: map['description'],
     );
   }
 
@@ -55,7 +55,7 @@ class NotificationModel {
 
   @override
   String toString() =>
-      'NotificationModel(date: $date, title: $title, body: $body, message: $message)';
+      'NotificationModel(date: $date, title: $title, body: $body, description: $description)';
 
   @override
   bool operator ==(covariant NotificationModel other) {
@@ -64,10 +64,10 @@ class NotificationModel {
     return other.date == date &&
         other.title == title &&
         other.body == body &&
-        other.message == message;
+        other.description == description;
   }
 
   @override
   int get hashCode =>
-      date.hashCode ^ title.hashCode ^ body.hashCode ^ message.hashCode;
+      date.hashCode ^ title.hashCode ^ body.hashCode ^ description.hashCode;
 }

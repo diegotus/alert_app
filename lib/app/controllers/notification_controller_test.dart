@@ -79,7 +79,7 @@ Future<void> showFullScreenNotification(RemoteMessage message) async {
         NotificationModel(
           title: title,
           body: body,
-          message: payloadData['message'],
+          description: payloadData['description'],
         ).toJson(),
       ];
     }
