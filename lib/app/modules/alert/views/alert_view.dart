@@ -17,7 +17,8 @@ class AlertView extends GetView<AlertController> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.warning, size: 80, color: Colors.red),
+              Image.asset("assets/icons/app_icon.png", height: 80),
+              // const Icon(Icons.warning, size: 80, color: Colors.red),
               const SizedBox(height: 20),
               Text(
                 message?['title'] ?? 'Unknown Emergency Alert',

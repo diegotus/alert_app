@@ -51,12 +51,12 @@ class _FutureDropdownFormState<T> extends State<FutureDropdownForm<T>> {
       builder: (context, snapshot) {
         List<DropdownMenuItem<T>>? items;
         Widget? icon;
-        String hintText = "Choose a Site";
+        String hintText = "Choisissez un Site";
         Widget? hintTextWidget;
         if (snapshot.connectionState == ConnectionState.waiting) {
           icon = FittedBox(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          hintText = "Click to Refresh";
+          hintText = "Cliquez pour Rafraichir";
           icon = Icon(Icons.refresh);
         }
         if (snapshot.hasData) {
@@ -72,7 +72,7 @@ class _FutureDropdownFormState<T> extends State<FutureDropdownForm<T>> {
                   )
                   .toList();
         } else {
-          hintText = "Click to Refresh";
+          hintText = "Cliquez pour Rafraichir";
         }
         if (widget.initialValue != null) {
           hintTextWidget = widget.itemBuilder(widget.initialValue as T);
@@ -89,7 +89,7 @@ class _FutureDropdownFormState<T> extends State<FutureDropdownForm<T>> {
           icon: icon,
         );
 
-        return hintText == "Click to Refresh"
+        return hintText == "Cliquez pour Rafraichir"
             ? InkWell(
               onTap: () {
                 setState(() {});

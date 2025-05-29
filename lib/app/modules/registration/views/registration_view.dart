@@ -17,73 +17,85 @@ class RegistrationView extends GetView<RegistrationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Enregistrement')),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: controller.formKey,
-            child: Column(
-              spacing: 15,
-              children: [
-                TextFormField(
-                  autofocus: true,
-                  decoration: const InputDecoration(labelText: 'Nom Complet'),
-                  textCapitalization: TextCapitalization.words,
-                  textInputAction: TextInputAction.next,
-                  onSaved: (value) => controller.name = value ?? '',
-                  validator:
-                      (value) =>
-                          value!.isEmpty
-                              ? 'Veuillez entrer votre Nom Complet svp.'
-                              : null,
-                ),
-
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Numéro de Téléphone',
-                    prefix: Text("+(509) "),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: controller.formKey,
+              child: Column(
+                spacing: 15,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset("assets/icons/app_splash.png", height: 120),
+                  Text(
+                    'Enregistrement',
+                    style: Get.textTheme.headlineLarge?.copyWith(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  keyboardType: TextInputType.phone,
-                  inputFormatters: [phoneFormatter],
-                  textInputAction: TextInputAction.next,
-                  onSaved:
-                      (value) =>
-                          controller.phone =
-                              '+509${value ?? ''.replaceAll(RegExp(r"-"), '')}',
-                  validator: validateHaitianPhoneNumber,
-                ),
+                  SizedBox(height: 5),
 
-                FutureDropdownForm(
-                  future: controller.callListApi,
-                  onSaved: (value) => controller.site = value?.name ?? '',
-                  onChanged: (item) {},
-                  onData: (data) {
-                    if (data != null && data.isNotEmpty) {
-                      StorageBox.sites.val =
-                          data.map((el) => el.toJson()).toList();
-                    }
-                  },
-                  initialValues:
-                      () =>
-                          StorageBox.sites.val
-                              .map((el) => SiteModel.fromJson(el))
-                              .toList(),
-                  validator:
-                      (value) =>
-                          value == null
-                              ? 'Veuillez Choisir un Site SVP.'
-                              : null,
-                  itemBuilder: (item) {
-                    return Text(item.name);
-                  },
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _submit,
-                  child: const Text("S'enregistrer"),
-                ),
-              ],
+                  TextFormField(
+                    autofocus: true,
+                    decoration: const InputDecoration(labelText: 'Nom Complet'),
+                    textCapitalization: TextCapitalization.words,
+                    textInputAction: TextInputAction.next,
+                    onSaved: (value) => controller.name = value ?? '',
+                    validator:
+                        (value) =>
+                            value!.isEmpty
+                                ? 'Veuillez entrer votre Nom Complet svp.'
+                                : null,
+                  ),
+
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Numéro de Téléphone',
+                      prefix: Text("+(509) "),
+                    ),
+                    keyboardType: TextInputType.phone,
+                    inputFormatters: [phoneFormatter],
+                    textInputAction: TextInputAction.next,
+                    onSaved:
+                        (value) =>
+                            controller.phone =
+                                '+509${value ?? ''.replaceAll(RegExp(r"-"), '')}',
+                    validator: validateHaitianPhoneNumber,
+                  ),
+
+                  FutureDropdownForm(
+                    future: controller.callListApi,
+                    onSaved: (value) => controller.site = value?.name ?? '',
+                    onChanged: (item) {},
+                    onData: (data) {
+                      if (data != null && data.isNotEmpty) {
+                        StorageBox.sites.val =
+                            data.map((el) => el.toJson()).toList();
+                      }
+                    },
+                    initialValues:
+                        () =>
+                            StorageBox.sites.val
+                                .map((el) => SiteModel.fromJson(el))
+                                .toList(),
+                    validator:
+                        (value) =>
+                            value == null
+                                ? 'Veuillez Choisir un Site SVP.'
+                                : null,
+                    itemBuilder: (item) {
+                      return Text(item.name);
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _submit,
+                    child: const Text("S'enregistrer"),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

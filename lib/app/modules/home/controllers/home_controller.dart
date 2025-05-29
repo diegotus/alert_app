@@ -14,10 +14,14 @@ class HomeController extends GetxController {
     listNotif.sortIt();
     listNotification.addAll(listNotif);
     StorageBox.boxKeys().listenKey("notifications", (value) {
-      var listNotif =
-          (value as List).map((el) => NotificationModel.fromJson(el)).toList();
-      listNotif.sortIt();
-      listNotification.assignAll(listNotif);
+      if (value != null) {
+        var listNotif =
+            (value as List)
+                .map((el) => NotificationModel.fromJson(el))
+                .toList();
+        listNotif.sortIt();
+        listNotification.assignAll(listNotif);
+      }
     });
 
     super.onInit();

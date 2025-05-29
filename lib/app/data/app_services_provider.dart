@@ -29,7 +29,14 @@ class AppServicesProvider extends GetConnect {
   Future<ServerResponseModel?> listSitesAPI() async {
     var response = await tryCatch(() async {
       var response = await get("/public/sites");
-      print("the response abm $response");
+      return CoreService.returnResponse(response);
+    });
+    return response;
+  }
+
+  Future<ServerResponseModel?> deleteAccount(String id) async {
+    var response = await tryCatch(() async {
+      var response = await delete("/public/devices/$id");
       return CoreService.returnResponse(response);
     });
     return response;

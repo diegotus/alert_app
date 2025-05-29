@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:alert_app/app/core/utils/formater.dart';
 import 'package:alert_app/app/data/models/notification_model.dart'
     show NotificationModel;
+import 'package:alert_app/app/routes/app_pages.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart' show FormState, GlobalKey;
 import 'package:get/get.dart';
@@ -39,25 +40,11 @@ class ProfilController extends GetxController {
         token: StorageBox.fmcToken.val,
       ),
     );
-    listNotification.addAll(
-      StorageBox.notifactions.val.map((el) => NotificationModel.fromJson(el)),
-    );
-    StorageBox.boxKeys().listenKey("notifications", (value) {
-      listNotification.assignAll(
-        (value as List<String>).map((el) => NotificationModel.fromJson(el)),
-      );
-    });
-
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
   void resetUser() {
-    var phone = user.value.phone;
+    // var phone = user.value.phone;
     user.update((user) {
       user?.id = appService.id;
       user?.name = appService.name;
@@ -71,6 +58,15 @@ class ProfilController extends GetxController {
       TextEditingValue.empty,
       TextEditingValue(text: appService.phone.replaceAll("+509", "")),
     );
+  }
+
+  Future<void> deleteAccount() async {
+    final response = await provider.deleteAccount(appService.id);
+    if (response?.isSuccess == true) {
+      await appService.clear();
+      response!.showMessage(message: ["Compte supprimé avec succès!"]);
+      Get.offAllNamed(Routes.REGISTRATION);
+    }
   }
 
   bool hasChanges() {

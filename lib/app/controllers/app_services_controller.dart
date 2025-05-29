@@ -106,4 +106,8 @@ class AppServicesController extends FullLifeCycleController
   void onPaused() {
     // TODO: implement onPaused
   }
+
+  Future<void> clear() async {
+    await StorageBox.clearData();
+  }
 }

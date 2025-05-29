@@ -14,6 +14,14 @@ mixin StorageBox {
     await boxKeys().remove('token');
   }
 
+  static Future<void> clearData() async {
+    await boxKeys().remove('id');
+    await boxKeys().remove('name');
+    await boxKeys().remove('phone');
+    await boxKeys().remove('site');
+    await boxKeys().remove('notifications');
+  }
+
   static saveData(String key, data) async {
     await boxKeys().write(key, data);
   }

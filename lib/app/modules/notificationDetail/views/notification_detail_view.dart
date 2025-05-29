@@ -13,20 +13,29 @@ class NotificationDetailView extends GetView<NotificationDetailController> {
     var item = Get.arguments as NotificationModel;
     return Scaffold(
       appBar: AppBar(title: Text(item.title), centerTitle: true),
-      body: Center(
-        child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(item.body, style: Get.textTheme.titleLarge),
-            Divider(height: 30),
-            Expanded(
-              child:
-                  (item.description ?? '').isNotEmpty
-                      ? SmartText(item.description!)
-                      : Center(child: Text("Aucun Message")),
+      body: Stack(
+        children: [
+          Center(
+            child: Image.asset(
+              "assets/icons/app_splash.png",
+              height: 200,
+              opacity: const AlwaysStoppedAnimation(.1),
             ),
-          ],
-        ),
+          ),
+          Column(
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(item.body, style: Get.textTheme.titleLarge),
+              Divider(height: 30),
+              Expanded(
+                child:
+                    (item.description ?? '').isNotEmpty
+                        ? SmartText(item.description!)
+                        : Center(child: Text("Aucun Message")),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
