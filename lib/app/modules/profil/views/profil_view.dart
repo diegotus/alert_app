@@ -1,9 +1,6 @@
-import 'dart:ffi';
-
 import 'package:alert_app/app/core/utils/storage_box.dart';
 import 'package:alert_app/app/core/utils/validators.dart';
 import 'package:alert_app/app/data/models/site_model.dart';
-import 'package:alert_app/app/data/models/user_model.dart';
 import 'package:alert_app/app/global_widgets/future_dropdown.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +22,11 @@ class ProfilView extends GetView<ProfilController> {
       ),
     );
     return Scaffold(
-      appBar: AppBar(title: const Text('Profil'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Profil'),
+        centerTitle: true,
+        foregroundColor: Theme.of(context).primaryColor,
+      ),
       resizeToAvoidBottomInset: false,
 
       body: Stack(

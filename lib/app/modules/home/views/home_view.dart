@@ -13,6 +13,11 @@ class HomeView extends GetView<HomeController> {
       appBar: AppBar(
         title: const Text('Acceuil'),
         centerTitle: true,
+        foregroundColor: Theme.of(context).primaryColor,
+        leading: IconButton(
+          icon: Icon(Icons.info_outline, size: 30),
+          onPressed: () => Get.toNamed(Routes.ABOUT),
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),

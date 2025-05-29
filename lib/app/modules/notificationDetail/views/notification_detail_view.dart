@@ -12,7 +12,11 @@ class NotificationDetailView extends GetView<NotificationDetailController> {
   Widget build(BuildContext context) {
     var item = Get.arguments as NotificationModel;
     return Scaffold(
-      appBar: AppBar(title: Text(item.title), centerTitle: true),
+      appBar: AppBar(
+        title: Text(item.title),
+        centerTitle: true,
+        foregroundColor: Theme.of(context).primaryColor,
+      ),
       body: Stack(
         children: [
           Center(
@@ -25,7 +29,11 @@ class NotificationDetailView extends GetView<NotificationDetailController> {
           Column(
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(item.body, style: Get.textTheme.titleLarge),
+              Text(
+                item.body,
+                style: Get.textTheme.titleLarge,
+                textAlign: TextAlign.center,
+              ),
               Divider(height: 30),
               Expanded(
                 child:

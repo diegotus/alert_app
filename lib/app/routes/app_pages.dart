@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../data/middleware/auth_gard.dart';
+import '../modules/about/views/about_view.dart';
 import '../modules/alert/bindings/alert_binding.dart';
 import '../modules/alert/views/alert_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -48,6 +49,12 @@ class AppPages {
       name: _Paths.NOTIFICATION_DETAIL,
       page: () => const NotificationDetailView(),
       binding: NotificationDetailBinding(),
+      middlewares: [CheckAuthentificated()],
+    ),
+    GetPage(
+      name: _Paths.ABOUT,
+      page: () => const AboutView(),
+      middlewares: [CheckAuthentificated()],
     ),
   ];
 }
