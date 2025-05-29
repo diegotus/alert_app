@@ -89,9 +89,9 @@ Future<void> showFullScreenNotification(RemoteMessage message) async {
       );
     } else {
       print("its testing");
-      Get.isRegistered<AlertController>()
-          ? Get.find<AlertController>().triggerAlert()
-          : Get.put<AlertController>(AlertController()).triggerAlert();
+      // Get.isRegistered<AlertController>()
+      //     ? Get.find<AlertController>().triggerAlert()
+      //     : Get.put<AlertController>(AlertController()).triggerAlert();
     }
   }
 }
