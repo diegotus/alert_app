@@ -55,6 +55,7 @@ class MyApp extends StatelessWidget {
           (val) => firebaseServices.onOpenNotificationArrive(val, taped: true),
       child: GetMaterialApp(
         title: "Application",
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(primarySwatch: Colors.red),
         initialRoute: AppPages.INITIAL,
         getPages: AppPages.routes,
