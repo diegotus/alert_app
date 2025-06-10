@@ -10,7 +10,7 @@ class AppServicesProvider extends GetConnect {
   @override
   void onInit() {
     httpClient.baseUrl = 'https://alerte-couronne.ehaiti.ht/api';
-    httpClient.timeout = const Duration(seconds: 30);
+    httpClient.timeout = const Duration(seconds: 15);
     httpClient.defaultDecoder = (body) {
       return ServerResponseModel.fromMap(body ?? {"statusCode": 404});
     };
