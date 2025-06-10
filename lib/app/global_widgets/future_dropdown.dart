@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 typedef Condition<T> = List<T> Function();
 
-class FutureDropdownForm<T> extends StatefulWidget {
-  const FutureDropdownForm({
+class FutureDropdownForm<T> extends GetWidget {
+  FutureDropdownForm({
     super.key,
     this.onChanged,
     required this.future,
@@ -13,7 +14,9 @@ class FutureDropdownForm<T> extends StatefulWidget {
     this.validator,
     this.initialValues,
     this.onData,
-  });
+  }) {
+    futureData = future().obs;
+  }
   final void Function(T? item)? onChanged;
   final void Function(List<T>? data)? onData;
   final String? Function(T?)? validator;
@@ -22,84 +25,74 @@ class FutureDropdownForm<T> extends StatefulWidget {
   final dynamic initialValues;
   final Widget Function(T item) itemBuilder;
   final T? initialValue;
-  @override
-  State<FutureDropdownForm<T>> createState() => _FutureDropdownFormState<T>();
-}
+  late final Rx<Future<List<T>>?> futureData;
+  void refreshFuture() {
+    futureData.value = future();
+  }
 
-class _FutureDropdownFormState<T> extends State<FutureDropdownForm<T>> {
-  List<T>? initialvalues;
   @override
-  void initState() {
-    super.initState();
-    if (widget.initialValues is Condition<T>) {
-      initialvalues = (widget.initialValues as Condition<T>)();
+  Widget build(Object context) {
+    Rx<Future<List<T>>?> futureData = Rx(future());
+    List<T>? initValues;
+    if (initialValues is Condition<T>) {
+      initValues = (initialValues as Condition<T>)();
     } else {
-      initialvalues = widget.initialValues as List<T>?;
+      initValues = initialValues as List<T>?;
     }
-  }
+    return Obx(
+      () => FutureBuilder<List<T>>(
+        future: futureData.value,
+        initialData: initValues,
+        builder: (context, snapshot) {
+          List<DropdownMenuItem<T>>? items;
+          Widget? icon;
+          String hintText = "Choisissez un Site";
+          Widget? hintTextWidget;
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            icon = FittedBox(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            hintText = "Cliquez pour Rafraichir";
+            icon = Icon(Icons.refresh);
+          }
+          if (snapshot.hasData) {
+            onData?.call(snapshot.data);
+            items =
+                snapshot.data
+                    ?.map(
+                      (el) =>
+                          DropdownMenuItem(value: el, child: itemBuilder(el)),
+                    )
+                    .toList();
+          } else {
+            hintText = "Cliquez pour Rafraichir";
+          }
+          if (initialValue != null) {
+            hintTextWidget = itemBuilder(initialValue as T);
+          } else {
+            hintTextWidget = Text(hintText);
+          }
+          Widget dropdown = DropdownButtonFormField<T>(
+            hint: hintTextWidget,
+            items: items,
+            value: initialValue,
+            onChanged: onChanged,
+            onSaved: onSaved,
+            validator: validator,
+            icon: icon,
+          );
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<T>>(
-      future: widget.future(),
-      initialData: initialvalues,
-      builder: (context, snapshot) {
-        List<DropdownMenuItem<T>>? items;
-        Widget? icon;
-        String hintText = "Choisissez un Site";
-        Widget? hintTextWidget;
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          icon = FittedBox(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          hintText = "Cliquez pour Rafraichir";
-          icon = Icon(Icons.refresh);
-        }
-        if (snapshot.hasData) {
-          print("its ash data");
-          widget.onData?.call(snapshot.data);
-          items =
-              snapshot.data
-                  ?.map(
-                    (el) => DropdownMenuItem(
-                      value: el,
-                      child: widget.itemBuilder(el),
-                    ),
-                  )
-                  .toList();
-        } else {
-          hintText = "Cliquez pour Rafraichir";
-        }
-        if (widget.initialValue != null) {
-          hintTextWidget = widget.itemBuilder(widget.initialValue as T);
-        } else {
-          hintTextWidget = Text(hintText);
-        }
-        Widget dropdown = DropdownButtonFormField<T>(
-          hint: hintTextWidget,
-          items: items,
-          value: widget.initialValue,
-          onChanged: widget.onChanged,
-          onSaved: widget.onSaved,
-          validator: widget.validator,
-          icon: icon,
-        );
-
-        return hintText == "Cliquez pour Rafraichir"
-            ? InkWell(
-              onTap: () {
-                setState(() {});
-              },
-              hoverColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              child: dropdown,
-            )
-            : dropdown;
-      },
+          return hintText == "Cliquez pour Rafraichir"
+              ? InkWell(
+                onTap: () {
+                  refreshFuture();
+                },
+                hoverColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                child: dropdown,
+              )
+              : dropdown;
+        },
+      ),
     );
   }
 }
