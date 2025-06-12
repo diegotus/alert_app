@@ -61,7 +61,9 @@ class ProfilView extends GetView<ProfilController> {
                                   labelText: 'Nom Complet',
                                 ),
                                 textInputAction: TextInputAction.next,
-
+                                onTapOutside: (event) {
+                                  FocusManager.instance.primaryFocus?.unfocus();
+                                },
                                 onChanged: (value) {
                                   controller.user.update((val) {
                                     val?.name = value;
@@ -89,7 +91,9 @@ class ProfilView extends GetView<ProfilController> {
 
                                 keyboardType: TextInputType.phone,
                                 inputFormatters: [phoneFormatter],
-
+                                onTapOutside: (event) {
+                                  FocusManager.instance.primaryFocus?.unfocus();
+                                },
                                 onChanged: (value) {
                                   phone.clear();
                                   controller.user.update((val) {

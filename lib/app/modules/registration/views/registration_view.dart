@@ -48,6 +48,9 @@ class RegistrationView extends GetView<RegistrationController> {
                             value!.isEmpty
                                 ? 'Veuillez entrer votre Nom Complet svp.'
                                 : null,
+                    onTapOutside: (event) {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    },
                   ),
 
                   TextFormField(
@@ -63,6 +66,9 @@ class RegistrationView extends GetView<RegistrationController> {
                             controller.phone =
                                 '+509${value ?? ''.replaceAll(RegExp(r"-"), '')}',
                     validator: validateHaitianPhoneNumber,
+                    onTapOutside: (event) {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    },
                   ),
 
                   FutureDropdownForm(

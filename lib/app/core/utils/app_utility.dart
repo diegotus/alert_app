@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart' show Color;
 import 'package:get/get.dart';
 
 enum TypeMessage { error, success, info, other }
@@ -30,4 +29,8 @@ SnackbarController showMsg(String msg, {Color? color, TypeMessage? type}) {
       margin: const EdgeInsets.fromLTRB(20, 5, 20, 20),
     ),
   );
+}
+
+hideKeyboard() {
+  return FocusManager.instance.primaryFocus?.unfocus();
 }
