@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 typedef Condition<T> = List<T> Function();
 
+// ignore: must_be_immutable
 class FutureDropdownForm<T> extends GetWidget {
   FutureDropdownForm({
     super.key,
@@ -14,9 +15,7 @@ class FutureDropdownForm<T> extends GetWidget {
     this.validator,
     this.initialValues,
     this.onData,
-  }) {
-    futureData = future().obs;
-  }
+  });
   final void Function(T? item)? onChanged;
   final void Function(List<T>? data)? onData;
   final String? Function(T?)? validator;
@@ -26,24 +25,29 @@ class FutureDropdownForm<T> extends GetWidget {
   final Widget Function(T item) itemBuilder;
   final T? initialValue;
   late final Rx<Future<List<T>>?> futureData;
+  bool isRefreshing = false;
   void refreshFuture() {
-    futureData.value = future();
+    if (!isRefreshing) {
+      isRefreshing = true;
+      futureData.value = future();
+    }
   }
 
   @override
   Widget build(Object context) {
-    Rx<Future<List<T>>?> futureData = Rx(future());
+    futureData = future().obs;
     List<T>? initValues;
     if (initialValues is Condition<T>) {
       initValues = (initialValues as Condition<T>)();
     } else {
       initValues = initialValues as List<T>?;
     }
-    return Obx(
-      () => FutureBuilder<List<T>>(
+    return Obx(() {
+      return FutureBuilder<List<T>>(
         future: futureData.value,
         initialData: initValues,
         builder: (context, snapshot) {
+          print("its a newValue");
           List<DropdownMenuItem<T>>? items;
           Widget? icon;
           String hintText = "Choisissez un Site";
@@ -53,6 +57,9 @@ class FutureDropdownForm<T> extends GetWidget {
           } else if (snapshot.hasError) {
             hintText = "Cliquez pour Rafraichir";
             icon = Icon(Icons.refresh);
+            isRefreshing = false;
+          } else {
+            isRefreshing = false;
           }
           if (snapshot.hasData) {
             onData?.call(snapshot.data);
@@ -92,7 +99,7 @@ class FutureDropdownForm<T> extends GetWidget {
               )
               : dropdown;
         },
-      ),
-    );
+      );
+    });
   }
 }

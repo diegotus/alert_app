@@ -21,7 +21,6 @@ class CoreService {
       case 403:
         if (body != null) {
           var responseJson = body;
-          debugPrint("Result : $responseJson");
 
           return responseJson!;
         }
