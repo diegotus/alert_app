@@ -10,7 +10,7 @@ import 'models/server_response_model.dart' show ServerResponseModel;
 class AppServicesProvider extends GetConnect {
   @override
   void onInit() {
-    httpClient.baseUrl = Url.BASE_URL;
+    httpClient.baseUrl = Url.BASE_URL + "api";
     httpClient.timeout = const Duration(seconds: 15);
     httpClient.defaultDecoder = (body) {
       if (body is String) return null;
