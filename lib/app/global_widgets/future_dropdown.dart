@@ -47,7 +47,6 @@ class FutureDropdownForm<T> extends GetWidget {
         future: futureData.value,
         initialData: initValues,
         builder: (context, snapshot) {
-          print("its a newValue");
           List<DropdownMenuItem<T>>? items;
           Widget? icon;
           String hintText = "Choisissez un Site";

@@ -1,12 +1,10 @@
 // ignore_for_file: unused_catch_clause, constant_identifier_names, prefer_typing_uninitialized_variables, depend_on_referenced_packages
 
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../data/models/server_response_model.dart'
     show ServerResponseModel;
 import 'app_exception.dart';
-import 'urls.dart';
 
 class CoreService {
   static ServerResponseModel returnResponse(Response response) {

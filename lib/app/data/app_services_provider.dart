@@ -4,14 +4,16 @@ import 'package:get/get.dart';
 
 import '../core/actions/try_catch.dart' show tryCatch;
 import '../core/utils/api_helper/core_service.dart' show CoreService;
+import '../core/utils/api_helper/urls.dart' show Url;
 import 'models/server_response_model.dart' show ServerResponseModel;
 
 class AppServicesProvider extends GetConnect {
   @override
   void onInit() {
-    httpClient.baseUrl = 'https://alerte-couronne.ehaiti.ht/api';
+    httpClient.baseUrl = Url.BASE_URL;
     httpClient.timeout = const Duration(seconds: 15);
     httpClient.defaultDecoder = (body) {
+      if (body is String) return null;
       return ServerResponseModel.fromMap(body ?? {"statusCode": 404});
     };
   }
